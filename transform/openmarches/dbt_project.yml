@@ -1,0 +1,23 @@
+name: openmarches
+version: '1.0.0'
+config-version: 2
+profile: openmarches
+model-paths: ["models"]
+seed-paths: ["seeds"]
+target-path: "target"
+clean-targets: ["target"]
+
+models:
+  openmarches:
+    staging:
+      +materialized: view
+    mart:
+      +materialized: table
+
+seeds:
+  openmarches:
+    ref_groupes_esn:
+      +column_types:
+        siret: varchar
+        nom_entreprise: varchar
+        groupe: varchar

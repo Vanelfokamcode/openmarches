@@ -1,0 +1,14 @@
+version: 2
+models:
+  - name: stg_marches
+    description: "Marchés DECP nettoyés — types corrects, montants filtrés"
+    columns:
+      - name: marche_id
+        tests:
+          - not_null
+      - name: montant_eur
+        tests:
+          - not_null
+      - name: annee
+        tests:
+          - not_null
