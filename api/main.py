@@ -112,3 +112,43 @@ def stats():
         AND flag_date_suspecte = FALSE
     """
     return query(sql)[0]
+
+
+@app.get("/depassements", summary="Marchés avec dépassements de budget réels")
+def depassements(
+    min_pct: float = Query(100.0, description="Dépassement minimum en % (défaut 100%)"),
+    limit: int = Query(30, le=200)
+):
+    sql = f"""
+        SELECT
+            marche_id,
+            acheteur_siret,
+            titulaire_siret,
+            ROUND(montant_initial_eur, 0) as montant_initial_eur,
+            ROUND(montant_apres_modif_eur, 0) as montant_apres_modif_eur,
+            ROUND(depassement_eur, 0) as depassement_eur,
+            depassement_pct,
+            LEFT(objet, 120) as objet,
+            date_notification,
+            date_modif
+        FROM main.mart_depassements_reels
+        WHERE depassement_pct >= {min_pct}
+        ORDER BY depassement_pct DESC
+        LIMIT {limit}
+    """
+    return query(sql)
+
+
+@app.get("/depassements/stats", summary="Statistiques globales des dépassements")
+def depassements_stats():
+    sql = """
+        SELECT
+            COUNT(*) as nb_marches_depasses,
+            ROUND(AVG(depassement_pct), 1) as depassement_moyen_pct,
+            ROUND(MEDIAN(depassement_pct), 1) as depassement_median_pct,
+            MAX(depassement_pct) as depassement_max_pct,
+            ROUND(SUM(depassement_eur) / 1e6, 1) as total_depassement_millions_eur
+        FROM main.mart_depassements_reels
+        WHERE depassement_pct < 500000
+    """
+    return query(sql)[0]

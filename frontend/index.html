@@ -274,7 +274,69 @@ async function loadAnomalies(type, btn) {
   }
 }
 
+# Ajouter ces fonctions dans le bloc <script> de index.html
+
+async function loadDepassementsStats() {
+  try {
+    const s = await get("/depassements/stats")
+    document.getElementById("dep-stats").innerHTML =
+      `${s.nb_marches_depasses} marchés dépassés · ` +
+      `Médiane : +${s.depassement_median_pct}% · ` +
+      `Max : +${s.depassement_max_pct?.toLocaleString("fr-FR")}% · ` +
+      `Total dépassement : ${s.total_depassement_millions_eur} M€`
+  } catch(e) {}
+}
+
+async function loadDepassements(minPct, btn) {
+  document.querySelectorAll("#page-depassements .yr-btn").forEach(b => b.classList.remove("active"))
+  if (btn) btn.classList.add("active")
+  document.getElementById("dep-content").innerHTML = '<div class="loading">Chargement...</div>'
+  try {
+    const data = await get(`/depassements?min_pct=${minPct}&limit=50`)
+    let html = `<div style="font-family:var(--mono);font-size:.65rem;color:var(--muted);margin-bottom:16px">${data.length} marchés avec dépassement ≥ +${minPct.toLocaleString("fr-FR")}%</div>`
+    html += `<table><thead><tr>
+      <th>Objet</th><th style="text-align:right">Initial</th>
+      <th style="text-align:right">Après avenant</th>
+      <th style="text-align:right">Dépassement</th>
+      <th>Date</th>
+    </tr></thead><tbody>`
+    data.forEach(r => {
+      const pct = r.depassement_pct?.toLocaleString("fr-FR")
+      html += `<tr>
+        <td style="max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.objet || "—"}</td>
+        <td style="text-align:right;color:rgba(245,240,232,.4)">${fmtM(r.montant_initial_eur)}</td>
+        <td style="text-align:right;color:var(--gold)">${fmtM(r.montant_apres_modif_eur)}</td>
+        <td style="text-align:right;color:var(--red);font-weight:700">+${pct}%</td>
+        <td style="color:rgba(245,240,232,.3)">${r.date_notification || "—"}</td>
+      </tr>`
+    })
+    html += "</tbody></table>"
+    document.getElementById("dep-content").innerHTML = html
+  } catch(e) {
+    document.getElementById("dep-content").innerHTML = '<div class="loading">Erreur API</div>'
+  }
+}
+
+
 loadStats()
 </script>
 </body>
 </html>
+<!-- PAGE DEPASSEMENTS ajoutee Day 8 -->
+<div id="page-depassements" class="page">
+  <div class="hero" style="padding:20px 32px">
+    <h1 style="font-size:2rem">Dépassements de budget</h1>
+    <p style="font-size:.8rem;margin-top:6px">Marchés avec modifications — montant initial vs montant réel après avenant</p>
+  </div>
+  <div style="padding:16px 32px;border-bottom:1px solid rgba(245,240,232,.1)">
+    <div id="dep-stats" style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">Chargement...</div>
+  </div>
+  <div style="padding:8px 32px;display:flex;gap:8px;align-items:center;border-bottom:1px solid rgba(245,240,232,.08)">
+    <span style="font-family:var(--mono);font-size:.65rem;color:var(--muted)">Dépassement minimum :</span>
+    <button class="yr-btn active" onclick="loadDepassements(100,this)">+100%</button>
+    <button class="yr-btn" onclick="loadDepassements(500,this)">+500%</button>
+    <button class="yr-btn" onclick="loadDepassements(1000,this)">+1 000%</button>
+    <button class="yr-btn" onclick="loadDepassements(10000,this)">+10 000%</button>
+  </div>
+  <div style="padding:24px 32px"><div id="dep-content" class="loading">Chargement...</div></div>
+</div>
