@@ -1,20 +1,25 @@
 import duckdb
+import math
 from pathlib import Path
 
 DB_PATH = Path(__file__).parent.parent / "data" / "openmarches.duckdb"
 
 def get_conn():
-    """Retourne une connexion DuckDB en lecture seule."""
     return duckdb.connect(str(DB_PATH), read_only=True)
 
+def clean(val):
+    if isinstance(val, float) and math.isnan(val):
+        return None
+    return val
+
 def query(sql: str, params: list = None) -> list[dict]:
-    """Execute une requete et retourne une liste de dicts."""
     conn = get_conn()
     try:
         if params:
             result = conn.execute(sql, params).fetchdf()
         else:
             result = conn.execute(sql).fetchdf()
-        return result.to_dict(orient="records")
+        records = result.to_dict(orient="records")
+        return [{k: clean(v) for k, v in row.items()} for row in records]
     finally:
         conn.close()
