@@ -71,6 +71,8 @@ tr:hover td{background:rgba(255,255,255,.02)}
     <a href="#" onclick="showPage('classement')" id="nav-classement">Classement</a>
     <a href="#" onclick="showPage('recherche')" id="nav-recherche">Recherche</a>
     <a href="#" onclick="showPage('anomalies')" id="nav-anomalies">Anomalies</a>
+    <a href="#" onclick="showPage('about')" id="nav-about">À propos</a>
+
   </div>
 </nav>
 
@@ -153,6 +155,32 @@ tr:hover td{background:rgba(255,255,255,.02)}
       <button class="yr-btn" onclick="loadAnomalies('DATE_SUSPECTE',this)">Dates impossibles</button>
     </div>
     <div id="anomalies-content"><div class="loading">Chargement...</div></div>
+  </div>
+</div>
+
+<div id="page-about" class="page">
+  <div class="hero" style="padding:20px 32px">
+    <h1 style="font-size:2rem">À propos des données</h1>
+    <p style="font-size:.8rem;margin-top:6px">Méthodologie, limites et sources</p>
+  </div>
+  <div style="padding:28px 32px;max-width:720px">
+    <h2 style="font-family:var(--display);font-size:1.3rem;letter-spacing:.08em;margin-bottom:12px">Source des données</h2>
+    <p style="font-family:var(--mono);font-size:.78rem;color:rgba(245,240,232,.6);line-height:1.8;margin-bottom:24px">
+      Les données proviennent des <strong style="color:var(--paper)">Données Essentielles de la Commande Publique (DECP)</strong>,
+      fichier consolidé produit par le Ministère des Finances et publié sur data.gouv.fr sous licence ouverte.
+      Tous les acheteurs publics français ont l'obligation légale depuis 2019 de publier leurs marchés de plus de 25 000€.
+    </p>
+    <h2 style="font-family:var(--display);font-size:1.3rem;letter-spacing:.08em;margin-bottom:12px">Ce que les données ne permettent pas de conclure</h2>
+    <div style="font-family:var(--mono);font-size:.78rem;color:rgba(245,240,232,.6);line-height:1.8;margin-bottom:24px">
+      <p style="margin-bottom:8px">⚠ Les <strong style="color:var(--gold)">montants des accords-cadres sont des plafonds</strong>, pas des dépenses réelles. Un marché à 100M€ ne signifie pas que 100M€ ont été dépensés.</p>
+      <p style="margin-bottom:8px">⚠ Le <strong style="color:var(--gold)">lieu d'exécution</strong> reflète parfois le siège de l'acheteur, pas le territoire réel du service rendu.</p>
+      <p style="margin-bottom:8px">⚠ Environ <strong style="color:var(--gold)">13% des marchés IT</strong> ne sont pas encore identifiés dans notre référentiel de groupes.</p>
+      <p>⚠ Les <strong style="color:var(--gold)">dépassements de budget</strong> identifiés sont le résultat de modifications contractuelles légales — ils ne constituent pas en eux-mêmes des irrégularités.</p>
+    </div>
+    <h2 style="font-family:var(--display);font-size:1.3rem;letter-spacing:.08em;margin-bottom:12px">Code source</h2>
+    <p style="font-family:var(--mono);font-size:.78rem;color:rgba(245,240,232,.6);line-height:1.8">
+      Ce projet est open source : <a href="https://github.com/Vanelfokamcode/openmarches" style="color:var(--red)">github.com/Vanelfokamcode/openmarches</a>
+    </p>
   </div>
 </div>
 
@@ -273,8 +301,6 @@ async function loadAnomalies(type, btn) {
     document.getElementById("anomalies-content").innerHTML = '<div class="loading">Erreur — API hors ligne ?</div>'
   }
 }
-
-# Ajouter ces fonctions dans le bloc <script> de index.html
 
 async function loadDepassementsStats() {
   try {
