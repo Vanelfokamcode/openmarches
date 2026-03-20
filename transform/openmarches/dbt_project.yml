@@ -21,3 +21,9 @@ seeds:
         siret: varchar
         nom_entreprise: varchar
         groupe: varchar
+    ref_population_dept:
+      +column_types:
+        dept: varchar
+        nom_dept: varchar
+        region: varchar
+        population_2023: integer

@@ -152,3 +152,77 @@ def depassements_stats():
         WHERE depassement_pct < 500000
     """
     return query(sql)[0]
+
+@app.get("/monopoles", summary="Monopoles par code CPV")
+def monopoles(
+    famille_cpv: str = Query(None, description="Ex: 72, 48, 32"),
+    niveau: str = Query(None, description="MONOPOLE, DOMINANT, MAJEUR"),
+    limit: int = Query(30, le=200)
+):
+    conditions = []
+    params = []
+    if famille_cpv:
+        conditions.append("famille_cpv = ?")
+        params.append(famille_cpv)
+    if niveau:
+        conditions.append("niveau_concentration = ?")
+        params.append(niveau)
+    where = "WHERE " + " AND ".join(conditions) if conditions else ""
+    sql = f"""
+        SELECT code_cpv, famille_cpv, groupe, rang,
+            nb_marches, total_millions_eur, part_pct,
+            niveau_concentration
+        FROM main.mart_monopoles_cpv
+        {where}
+        ORDER BY total_millions_eur DESC
+        LIMIT {limit}
+    """
+    return query(sql, params if params else None)
+
+
+@app.get("/monopoles/top", summary="Top monopoles absolus")
+def monopoles_top(limit: int = Query(20, le=100)):
+    sql = f"""
+        SELECT code_cpv, famille_cpv, groupe,
+            total_millions_eur, part_pct, niveau_concentration
+        FROM main.mart_monopoles_cpv
+        WHERE rang = 1
+        AND niveau_concentration IN ('MONOPOLE', 'DOMINANT')
+        ORDER BY total_millions_eur DESC
+        LIMIT {limit}
+    """
+    return query(sql)
+
+@app.get("/geo", summary="Dépenses IT par département")
+def geo(
+    region: str = Query(None, description="Filtrer par région"),
+    limit: int = Query(50, le=110)
+):
+    where = "WHERE region = ?" if region else ""
+    params = [region] if region else None
+    sql = f"""
+        SELECT dept, nom_dept, region, population_2023,
+            nb_marches_it, total_M_it,
+            total_M_logiciels, total_M_telecom, total_M_materiel,
+            euros_it_par_habitant
+        FROM main.mart_geo_departements
+        {where}
+        ORDER BY total_M_it DESC
+        LIMIT {limit}
+    """
+    return query(sql, params if params else None)
+
+
+@app.get("/geo/stats", summary="Stats géo globales")
+def geo_stats():
+    sql = """
+        SELECT
+            COUNT(DISTINCT dept) as nb_departements,
+            ROUND(SUM(total_M_it), 1) as total_M_it_france,
+            ROUND(AVG(euros_it_par_habitant), 2) as moy_euros_hab,
+            MAX(euros_it_par_habitant) as max_euros_hab,
+            MIN(euros_it_par_habitant) as min_euros_hab
+        FROM main.mart_geo_departements
+        WHERE euros_it_par_habitant IS NOT NULL
+    """
+    return query(sql)[0]

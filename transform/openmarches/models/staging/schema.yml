@@ -12,3 +12,8 @@ models:
       - name: annee
         tests:
           - not_null
+sources:
+  - name: openmarches
+    schema: main
+    tables:
+      - name: raw_marches_full
