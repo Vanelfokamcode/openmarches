@@ -8,3 +8,5 @@ data/
 *.duckdb
 *.json
 venv/
+frontend/node_modules/
+node_modules/
