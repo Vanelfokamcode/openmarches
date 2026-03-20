@@ -4,3 +4,7 @@ __pycache__/
 venv/
 .env
 data/
+data/
+*.duckdb
+*.json
+venv/
