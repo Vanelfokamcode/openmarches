@@ -1,19 +1,19 @@
-# Dans check.py — stats finales avant commit
+# Dans check.py en local — créer un DuckDB de prod minimaliste
 import duckdb
 
-conn = duckdb.connect("data/openmarches.duckdb")
+src = duckdb.connect("data/openmarches.duckdb")
+prod = duckdb.connect("data/openmarches_prod.duckdb")
 
-print("=== REPARTITION PAR TYPE CODE GEO ===")
-print(conn.execute("""
-    SELECT lieuExecution.typeCode as type_code,
-        COUNT(*) as nb,
-        ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER(), 1) as pct
-    FROM raw_marches_full
-    WHERE lieuExecution IS NOT NULL
-    AND codeCPV LIKE '72%'
-    GROUP BY type_code
-    ORDER BY nb DESC
-    LIMIT 8
-""").fetchdf().to_string(index=False))
+# Copier seulement les marts — pas les raw tables
+for table in ["mart_classement_groupes", "mart_anomalies",
+              "mart_acheteurs_actifs", "mart_depassements_reels",
+              "mart_monopoles_cpv", "ref_groupes_esn"]:
+    try:
+        df = src.execute("SELECT * FROM main." + table).fetchdf()
+        prod.execute("CREATE TABLE " + table + " AS SELECT * FROM df")
+        print(table + " : " + str(len(df)) + " lignes")
+    except Exception as e:
+        print(table + " ERREUR : " + str(e))
 
-conn.close()
+src.close()
+prod.close()
