@@ -1,5 +1,9 @@
+# Ajouter numpy dans requirements.txt dans VSCode
+# requirements.txt :
 fastapi
 uvicorn
 duckdb
+pandas
+numpy
 requests
 ijson
