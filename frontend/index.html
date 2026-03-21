@@ -3,87 +3,136 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>OpenMarchés</title>
+<title>OpenMarchés — Marchés IT publics français</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;700&family=Fraunces:opsz,wght@9..144,300;9..144,700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{--ink:#0a0a08;--paper:#f5f0e8;--red:#c1121f;--gold:#d4a017;--green:#2d6a4f;--muted:#7a7060;--mono:'IBM Plex Mono',monospace;--serif:'Fraunces',serif;--display:'Bebas Neue',sans-serif}
-body{font-family:var(--serif);background:var(--ink);color:var(--paper);min-height:100vh}
-nav{border-bottom:2px solid var(--paper);padding:14px 32px;display:flex;align-items:center;gap:12px}
-.logo{font-family:var(--display);font-size:1.8rem;letter-spacing:.05em}
-.badge{font-family:var(--mono);font-size:.6rem;color:var(--red);border:1px solid var(--red);padding:2px 6px;letter-spacing:.15em;text-transform:uppercase}
-.nav-links{margin-left:auto;display:flex;gap:0}
-.nav-links a{font-family:var(--mono);font-size:.7rem;color:rgba(245,240,232,.4);text-decoration:none;padding:6px 14px;border:1px solid transparent;text-transform:uppercase;letter-spacing:.08em;transition:all .15s}
-.nav-links a:hover,.nav-links a.active{color:var(--red);border-color:rgba(193,18,31,.3)}
-.hero{background:var(--red);padding:32px}
-.hero-label{font-family:var(--mono);font-size:.65rem;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.2em;margin-bottom:8px}
-.hero h1{font-family:var(--display);font-size:clamp(2.5rem,6vw,5rem);letter-spacing:.05em;color:#fff;line-height:1}
-.hero p{margin-top:14px;color:rgba(255,255,255,.7);font-weight:300;max-width:600px;font-size:.9rem;line-height:1.7}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid rgba(245,240,232,.1)}
-.stat{padding:20px 24px;border-right:1px solid rgba(245,240,232,.08)}
+body{font-family:var(--serif);background:var(--ink);color:var(--paper);min-height:100vh;display:flex;flex-direction:column}
+
+/* NAV */
+nav{border-bottom:2px solid var(--paper);padding:0 32px;display:flex;align-items:stretch;gap:0;overflow-x:auto;flex-shrink:0}
+nav::-webkit-scrollbar{height:2px}
+nav::-webkit-scrollbar-thumb{background:var(--muted)}
+.logo-wrap{display:flex;align-items:center;gap:10px;padding:12px 24px 12px 0;border-right:1px solid rgba(245,240,232,.15);margin-right:8px;flex-shrink:0}
+.logo{font-family:var(--display);font-size:1.8rem;letter-spacing:.05em;color:var(--paper)}
+.badge{font-family:var(--mono);font-size:.55rem;color:var(--red);border:1px solid var(--red);padding:2px 6px;letter-spacing:.15em;text-transform:uppercase}
+.nav-links{display:flex;align-items:stretch;gap:0}
+.nav-group{font-family:var(--mono);font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(245,240,232,.2);padding:0 10px;align-self:center;flex-shrink:0}
+.nav-sep{width:1px;background:rgba(245,240,232,.1);align-self:center;height:20px;margin:0 4px;flex-shrink:0}
+.nav-links a{font-family:var(--mono);font-size:.68rem;color:rgba(245,240,232,.4);text-decoration:none;padding:0 14px;border:none;border-bottom:3px solid transparent;text-transform:uppercase;letter-spacing:.07em;transition:all .15s;display:flex;align-items:center;white-space:nowrap;position:relative;top:1px}
+.nav-links a:hover{color:var(--paper)}
+.nav-links a.active{color:var(--red);border-bottom-color:var(--red)}
+
+/* HERO */
+.hero{background:var(--red);padding:28px 32px;flex-shrink:0}
+.hero-label{font-family:var(--mono);font-size:.62rem;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.2em;margin-bottom:8px}
+.hero h1{font-family:var(--display);font-size:clamp(2rem,5vw,4rem);letter-spacing:.05em;color:#fff;line-height:1}
+.hero p{margin-top:12px;color:rgba(255,255,255,.7);font-weight:300;max-width:580px;font-size:.88rem;line-height:1.7}
+
+/* STATS BAND */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid rgba(245,240,232,.08)}
+.stat{padding:18px 24px;border-right:1px solid rgba(245,240,232,.06)}
 .stat:last-child{border-right:none}
-.stat-n{font-family:var(--display);font-size:2.2rem;color:var(--gold);display:block;line-height:1}
-.stat-l{font-family:var(--mono);font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:4px;display:block}
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.04);margin:32px}
-.card{background:var(--ink);padding:28px;cursor:pointer;border:1px solid rgba(255,255,255,.04);transition:border-color .15s}
+.stat-n{font-family:var(--display);font-size:2rem;color:var(--gold);display:block;line-height:1}
+.stat-l{font-family:var(--mono);font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:4px;display:block}
+
+/* CARDS */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.04);margin:28px 32px}
+.card{background:var(--ink);padding:24px;cursor:pointer;border:1px solid rgba(255,255,255,.04);transition:border-color .15s}
 .card:hover{border-color:rgba(193,18,31,.3)}
-.card h2{font-family:var(--display);font-size:1.3rem;letter-spacing:.08em;margin-bottom:10px}
-.card p{font-family:var(--serif);font-size:.82rem;color:rgba(245,240,232,.45);font-weight:300;line-height:1.7}
-.card .arrow{display:block;margin-top:14px;font-family:var(--mono);font-size:.65rem;color:var(--red);text-transform:uppercase;letter-spacing:.12em}
-/* Pages */
-.page{display:none;padding:32px}
-.page.active{display:block}
-.page-title{font-family:var(--display);font-size:2rem;letter-spacing:.08em;margin-bottom:6px}
-.page-sub{font-family:var(--mono);font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:24px}
-/* Table */
-table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.78rem}
-th{background:rgba(245,240,232,.04);color:var(--gold);padding:10px 14px;text-align:left;border-bottom:1px solid rgba(245,240,232,.1);font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;font-weight:normal}
-td{padding:12px 14px;border-bottom:1px solid rgba(245,240,232,.05);color:rgba(245,240,232,.7)}
+.card h2{font-family:var(--display);font-size:1.2rem;letter-spacing:.08em;margin-bottom:8px}
+.card p{font-family:var(--serif);font-size:.8rem;color:rgba(245,240,232,.45);font-weight:300;line-height:1.7}
+.card .arrow{display:block;margin-top:12px;font-family:var(--mono);font-size:.62rem;color:var(--red);text-transform:uppercase;letter-spacing:.12em}
+
+/* DISCOVERIES GRID */
+.discoveries{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1px;background:rgba(245,240,232,.06);margin:0 32px 28px}
+.disc-card{background:var(--ink);padding:18px 20px}
+.disc-n{font-family:var(--display);font-size:2.2rem;letter-spacing:.03em;line-height:1}
+.disc-title{font-family:var(--mono);font-size:.7rem;color:var(--paper);margin:6px 0 4px}
+.disc-desc{font-family:var(--mono);font-size:.62rem;color:var(--muted);line-height:1.55}
+
+/* PAGES */
+.page{display:none;flex:1;overflow-y:auto}
+.page.active{display:flex;flex-direction:column}
+.page-body{padding:24px 32px;flex:1}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.76rem}
+th{background:rgba(245,240,232,.04);color:var(--gold);padding:10px 14px;text-align:left;border-bottom:1px solid rgba(245,240,232,.1);font-size:.63rem;letter-spacing:.08em;text-transform:uppercase;font-weight:normal}
+td{padding:11px 14px;border-bottom:1px solid rgba(245,240,232,.05);color:rgba(245,240,232,.7)}
 tr:hover td{background:rgba(255,255,255,.02)}
 .bar-cell{display:flex;align-items:center;gap:8px}
-.bar{height:3px;background:var(--red);min-width:2px}
-/* Search */
+.bar{height:3px;background:var(--red);min-width:2px;flex-shrink:0}
+
+/* SEARCH */
 .search-box{display:flex;margin-bottom:24px}
 .search-box input{flex:1;background:rgba(0,0,0,.4);border:1px solid rgba(245,240,232,.15);padding:12px 16px;font-family:var(--mono);font-size:.8rem;color:var(--paper);outline:none}
 .search-box input:focus{border-color:var(--red)}
-.search-box button{background:var(--paper);color:var(--ink);border:none;padding:12px 20px;font-family:var(--display);font-size:.9rem;letter-spacing:.1em;cursor:pointer}
-.result-item{border:1px solid rgba(245,240,232,.05);padding:16px 20px;margin-bottom:8px;transition:border-color .15s}
-.result-item:hover{border-color:rgba(245,240,232,.15)}
-.result-groupe{font-family:var(--mono);font-size:.62rem;color:var(--red);text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px}
-.result-objet{font-size:.83rem;color:rgba(245,240,232,.7);font-weight:300;line-height:1.6;margin-bottom:8px}
-.result-meta{font-family:var(--mono);font-size:.62rem;color:rgba(245,240,232,.25);display:flex;gap:16px}
-.result-montant{font-family:var(--display);font-size:1.4rem;color:var(--gold);letter-spacing:.05em;white-space:nowrap}
-.result-row{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.search-box button{background:var(--paper);color:var(--ink);border:none;padding:12px 20px;font-family:var(--display);font-size:.9rem;letter-spacing:.1em;cursor:pointer;flex-shrink:0}
+.result-item{border:1px solid rgba(245,240,232,.05);padding:14px 18px;margin-bottom:8px;transition:border-color .15s}
+.result-item:hover{border-color:rgba(245,240,232,.12)}
+.result-groupe{font-family:var(--mono);font-size:.6rem;color:var(--red);text-transform:uppercase;letter-spacing:.12em;margin-bottom:5px}
+.result-objet{font-size:.82rem;color:rgba(245,240,232,.7);font-weight:300;line-height:1.6;margin-bottom:7px}
+.result-meta{font-family:var(--mono);font-size:.6rem;color:rgba(245,240,232,.25);display:flex;gap:14px;flex-wrap:wrap}
+.result-montant{font-family:var(--display);font-size:1.3rem;color:var(--gold);letter-spacing:.05em;white-space:nowrap}
+.result-row{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
+
+/* BUTTONS */
 .yr-btns{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap}
-.yr-btn{font-family:var(--mono);font-size:.65rem;padding:5px 12px;border:1px solid rgba(245,240,232,.15);background:transparent;color:rgba(245,240,232,.4);cursor:pointer;text-transform:uppercase;letter-spacing:.08em;transition:all .15s}
+.yr-btn{font-family:var(--mono);font-size:.63rem;padding:5px 12px;border:1px solid rgba(245,240,232,.15);background:transparent;color:rgba(245,240,232,.4);cursor:pointer;text-transform:uppercase;letter-spacing:.08em;transition:all .15s}
 .yr-btn:hover,.yr-btn.active{border-color:var(--red);color:var(--red)}
-.loading{font-family:var(--mono);font-size:.75rem;color:var(--muted);padding:32px;text-align:center}
-@media(max-width:768px){.stats{grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:1fr;margin:16px}.nav-links{display:none}}
+
+/* MISC */
+.loading{font-family:var(--mono);font-size:.75rem;color:var(--muted);padding:40px;text-align:center}
+.section-label{font-family:var(--mono);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+
+/* FOOTER */
+footer{border-top:1px solid rgba(245,240,232,.07);padding:12px 32px;display:flex;align-items:center;gap:20px;font-family:var(--mono);font-size:.62rem;color:rgba(245,240,232,.25);background:rgba(0,0,0,.3);flex-shrink:0}
+footer a{color:rgba(245,240,232,.25);text-decoration:none}
+footer a:hover{color:var(--muted)}
+footer .spacer{flex:1}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .cards{grid-template-columns:1fr;margin:16px}
+  .discoveries{margin:0 16px 16px}
+  .page-body{padding:16px}
+  .nav-links{display:none}
+}
 </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav>
-  <span class="logo">OpenMarchés</span>
-  <span class="badge">Beta</span>
+  <div class="logo-wrap">
+    <span class="logo">OpenMarchés</span>
+    <span class="badge">Beta</span>
+  </div>
   <div class="nav-links">
-    <a href="#" onclick="showPage('home')" class="active" id="nav-home">Accueil</a>
-    <a href="#" onclick="showPage('classement')" id="nav-classement">Classement</a>
-    <a href="#" onclick="showPage('recherche')" id="nav-recherche">Recherche</a>
-    <a href="#" onclick="showPage('anomalies')" id="nav-anomalies">Anomalies</a>
-    <a href="#" onclick="showPage('monopoles')" id="nav-monopoles">Monopoles</a>
-    <a href="#" onclick="showPage('geo')" id="nav-geo">Géographie</a>
-    <a href="#" onclick="showPage('about')" id="nav-about">À propos</a>
-    
-
-
+    <span class="nav-group">Explorer</span>
+    <a href="#" onclick="showPage('accueil');return false" id="nav-accueil" class="active">Accueil</a>
+    <a href="#" onclick="showPage('classement');return false" id="nav-classement">Classement</a>
+    <a href="#" onclick="showPage('recherche');return false" id="nav-recherche">Recherche</a>
+    <a href="#" onclick="showPage('geo');return false" id="nav-geo">Géographie</a>
+    <span class="nav-sep"></span>
+    <span class="nav-group">Signaux</span>
+    <a href="#" onclick="showPage('anomalies');return false" id="nav-anomalies">Anomalies</a>
+    <a href="#" onclick="showPage('depassements');return false" id="nav-depassements">Dépassements</a>
+    <span class="nav-sep"></span>
+    <span class="nav-group">Marchés</span>
+    <a href="#" onclick="showPage('monopoles');return false" id="nav-monopoles">Monopoles</a>
+    <span class="nav-sep"></span>
+    <a href="#" onclick="showPage('about');return false" id="nav-about">À propos</a>
   </div>
 </nav>
 
-<!-- HOME -->
-<div id="page-home" class="page active">
+<!-- ======================== PAGE ACCUEIL ======================== -->
+<div id="page-accueil" class="page active">
   <div class="hero">
-    <div class="hero-label">Investigation · Données publiques</div>
+    <div class="hero-label">Investigation · Données publiques · DECP 2018–2026</div>
     <h1>L'argent public IT<br>en France — ouvert</h1>
     <p>Depuis 2019, chaque marché public de plus de 25 000€ doit être publié en open data. Ces données existent. Personne ne les avait rendues lisibles. Jusqu'ici.</p>
   </div>
@@ -93,32 +142,69 @@ tr:hover td{background:rgba(255,255,255,.02)}
     <div class="stat"><span class="stat-n" id="s-acheteurs">—</span><span class="stat-l">Acheteurs publics</span></div>
     <div class="stat"><span class="stat-n" id="s-titulaires">—</span><span class="stat-l">Entreprises titulaires</span></div>
   </div>
+
+  <div style="padding:24px 32px 8px">
+    <div class="section-label">Découvertes clés</div>
+  </div>
+  <div class="discoveries">
+    <div class="disc-card">
+      <div class="disc-n" style="color:var(--red)">13,3 Md€</div>
+      <div class="disc-title">SCC France — le géant invisible</div>
+      <div class="disc-desc">55% des marchés logiciels publics. Personne n'en parle dans les classements ESN.</div>
+    </div>
+    <div class="disc-card">
+      <div class="disc-n" style="color:var(--red)">239 900%</div>
+      <div class="disc-title">Dépassement de budget maximum</div>
+      <div class="disc-desc">125 000€ → 300 millions via avenant. Légal, invisible sans les données.</div>
+    </div>
+    <div class="disc-card">
+      <div class="disc-n" style="color:var(--gold)">13,8 Md€</div>
+      <div class="disc-title">Sans mise en concurrence</div>
+      <div class="disc-desc">22 433 marchés attribués directement, sans appel d'offres public.</div>
+    </div>
+    <div class="disc-card">
+      <div class="disc-n" style="color:var(--gold)">48%</div>
+      <div class="disc-title">PME indépendantes</div>
+      <div class="disc-desc">Contre toute intuition, les grandes ESN nationales ne dominent pas le marché IT public.</div>
+    </div>
+    <div class="disc-card">
+      <div class="disc-n" style="color:rgba(245,240,232,.4)">356</div>
+      <div class="disc-title">Marchés à 1€ ou moins</div>
+      <div class="disc-desc">L'obligation de publication contournée par des montants symboliques.</div>
+    </div>
+    <div class="disc-card">
+      <div class="disc-n" style="color:rgba(245,240,232,.4)">479 506</div>
+      <div class="disc-title">Marchés analysés</div>
+      <div class="disc-desc">Données DECP complètes 2018–2026. Open data, licence ouverte Ministère des Finances.</div>
+    </div>
+  </div>
+
   <div class="cards">
     <div class="card" onclick="showPage('classement')">
       <h2>Classement des groupes</h2>
-      <p>Qui capte combien du marché IT public ? Orange, EY, Nomios... Le vrai classement par groupe économique.</p>
+      <p>Qui capte combien du marché IT public ? SCC, Orange, Capgemini... Le vrai classement par groupe économique.</p>
       <span class="arrow">Explorer →</span>
     </div>
-    <div class="card" onclick="showPage('recherche')">
-      <h2>Recherche libre</h2>
-      <p>Cherchez une entreprise, un ministère, un type de prestation. Les marchés s'affichent avec les montants réels.</p>
+    <div class="card" onclick="showPage('depassements')">
+      <h2>Dépassements de budget</h2>
+      <p>Les marchés dont le montant a explosé après signature. Jusqu'à +239 900% via avenant.</p>
       <span class="arrow">Explorer →</span>
     </div>
-    <div class="card" onclick="showPage('anomalies')">
-      <h2>Données suspectes</h2>
-      <p>Marchés à 1€, dates en 1900, acheteurs fantômes. Ce que les données révèlent sur la qualité de publication.</p>
+    <div class="card" onclick="showPage('monopoles')">
+      <h2>Monopoles sectoriels</h2>
+      <p>Sur certains CPV précis, un seul groupe capte plus de 50% des marchés publics. Identifiés ici.</p>
       <span class="arrow">Explorer →</span>
     </div>
   </div>
 </div>
 
-<!-- CLASSEMENT -->
+<!-- ======================== PAGE CLASSEMENT ======================== -->
 <div id="page-classement" class="page">
   <div class="hero" style="padding:20px 32px">
-    <h1 style="font-size:2rem">Classement des groupes — Marchés IT publics</h1>
-    <p style="font-size:.8rem;margin-top:6px">Source DECP · CPV 72* · Montants hors aberrations</p>
+    <h1 style="font-size:2.2rem">Classement des groupes</h1>
+    <p style="font-size:.82rem;margin-top:6px">Marchés IT publics (CPV 72*) · Montants hors aberrations · Source DECP</p>
   </div>
-  <div style="padding:24px 32px">
+  <div class="page-body">
     <div class="yr-btns">
       <button class="yr-btn active" onclick="loadClassement(null,this)">Toutes années</button>
       <button class="yr-btn" onclick="loadClassement('2026',this)">2026</button>
@@ -126,33 +212,35 @@ tr:hover td{background:rgba(255,255,255,.02)}
       <button class="yr-btn" onclick="loadClassement('2024',this)">2024</button>
       <button class="yr-btn" onclick="loadClassement('2023',this)">2023</button>
       <button class="yr-btn" onclick="loadClassement('2022',this)">2022</button>
+      <button class="yr-btn" onclick="loadClassement('2021',this)">2021</button>
     </div>
     <div id="classement-content"><div class="loading">Chargement...</div></div>
   </div>
 </div>
 
-<!-- RECHERCHE -->
+<!-- ======================== PAGE RECHERCHE ======================== -->
 <div id="page-recherche" class="page">
   <div class="hero" style="padding:20px 32px">
-    <h1 style="font-size:2rem">Recherche libre</h1>
-    <p style="font-size:.8rem;margin-top:6px">Entreprise, ministère, type de prestation</p>
+    <h1 style="font-size:2.2rem">Recherche libre</h1>
+    <p style="font-size:.82rem;margin-top:6px">Entreprise, ministère, type de prestation</p>
   </div>
-  <div style="padding:24px 32px">
+  <div class="page-body">
     <div class="search-box">
-      <input type="text" id="search-input" placeholder="Ex: orange, capgemini, sécurité informatique..." onkeydown="if(event.key==='Enter')doSearch()">
+      <input type="text" id="search-input" placeholder="Ex: orange, capgemini, sécurité informatique, RESAH..."
+        onkeydown="if(event.key==='Enter')doSearch()">
       <button onclick="doSearch()">Chercher</button>
     </div>
     <div id="search-results"><p class="loading">Tapez un terme pour commencer</p></div>
   </div>
 </div>
 
-<!-- ANOMALIES -->
+<!-- ======================== PAGE ANOMALIES ======================== -->
 <div id="page-anomalies" class="page">
   <div class="hero" style="padding:20px 32px">
-    <h1 style="font-size:2rem">Données suspectes</h1>
-    <p style="font-size:.8rem;margin-top:6px">Anomalies détectées dans les DECP</p>
+    <h1 style="font-size:2.2rem">Données suspectes</h1>
+    <p style="font-size:.82rem;margin-top:6px">Anomalies détectées dans les DECP publiés</p>
   </div>
-  <div style="padding:24px 32px">
+  <div class="page-body">
     <div class="yr-btns">
       <button class="yr-btn active" onclick="loadAnomalies(null,this)">Toutes</button>
       <button class="yr-btn" onclick="loadAnomalies('MONTANT_SUSPECT',this)">Montants à 1€</button>
@@ -162,294 +250,328 @@ tr:hover td{background:rgba(255,255,255,.02)}
   </div>
 </div>
 
+<!-- ======================== PAGE DEPASSEMENTS ======================== -->
+<div id="page-depassements" class="page">
+  <div class="hero" style="padding:20px 32px">
+    <h1 style="font-size:2.2rem">Dépassements de budget</h1>
+    <p style="font-size:.82rem;margin-top:6px">Marchés dont le montant a augmenté après signature — montant initial vs montant réel après avenant</p>
+  </div>
+  <div style="padding:14px 32px;border-bottom:1px solid rgba(245,240,232,.08)">
+    <div id="dep-stats" style="font-family:var(--mono);font-size:.73rem;color:var(--muted)">Chargement...</div>
+  </div>
+  <div class="page-body">
+    <div class="yr-btns">
+      <span style="font-family:var(--mono);font-size:.63rem;color:var(--muted);align-self:center">Dépassement minimum :</span>
+      <button class="yr-btn active" onclick="loadDepassements(100,this)">+100%</button>
+      <button class="yr-btn" onclick="loadDepassements(500,this)">+500%</button>
+      <button class="yr-btn" onclick="loadDepassements(1000,this)">+1 000%</button>
+      <button class="yr-btn" onclick="loadDepassements(10000,this)">+10 000%</button>
+    </div>
+    <div id="dep-content"><div class="loading">Chargement...</div></div>
+  </div>
+</div>
+
+<!-- ======================== PAGE MONOPOLES ======================== -->
+<div id="page-monopoles" class="page">
+  <div class="hero" style="padding:20px 32px">
+    <h1 style="font-size:2.2rem">Monopoles sectoriels</h1>
+    <p style="font-size:.82rem;margin-top:6px">Qui domine quels secteurs IT dans les marchés publics français</p>
+  </div>
+  <div class="page-body">
+    <div class="yr-btns">
+      <button class="yr-btn active" onclick="loadMonopoles(null,this)">Top monopoles</button>
+      <button class="yr-btn" onclick="loadMonopoles('72',this)">72 — Services IT</button>
+      <button class="yr-btn" onclick="loadMonopoles('48',this)">48 — Logiciels</button>
+      <button class="yr-btn" onclick="loadMonopoles('64',this)">64 — Télécom</button>
+      <button class="yr-btn" onclick="loadMonopoles('30',this)">30 — Matériel</button>
+    </div>
+    <div id="mono-content"><div class="loading">Chargement...</div></div>
+  </div>
+</div>
+
+<!-- ======================== PAGE GEO ======================== -->
+<div id="page-geo" class="page">
+  <div class="hero" style="padding:20px 32px">
+    <h1 style="font-size:2.2rem">Géographie des marchés IT</h1>
+    <p style="font-size:.82rem;margin-top:6px">Dépenses IT publiques par département — source champ lieuExecution des DECP</p>
+  </div>
+  <div class="page-body">
+    <div id="geo-stats" style="font-family:var(--mono);font-size:.72rem;color:var(--muted);margin-bottom:20px"></div>
+    <div id="geo-content"><div class="loading">Chargement...</div></div>
+  </div>
+</div>
+
+<!-- ======================== PAGE ABOUT ======================== -->
 <div id="page-about" class="page">
   <div class="hero" style="padding:20px 32px">
-    <h1 style="font-size:2rem">À propos des données</h1>
-    <p style="font-size:.8rem;margin-top:6px">Méthodologie, limites et sources</p>
+    <h1 style="font-size:2.2rem">À propos des données</h1>
+    <p style="font-size:.82rem;margin-top:6px">Méthodologie, limites et sources</p>
   </div>
-  <div style="padding:28px 32px;max-width:720px">
-    <h2 style="font-family:var(--display);font-size:1.3rem;letter-spacing:.08em;margin-bottom:12px">Source des données</h2>
-    <p style="font-family:var(--mono);font-size:.78rem;color:rgba(245,240,232,.6);line-height:1.8;margin-bottom:24px">
+  <div class="page-body" style="max-width:720px">
+    <div style="font-family:var(--display);font-size:1.2rem;letter-spacing:.08em;margin-bottom:10px">Source des données</div>
+    <p style="font-family:var(--mono);font-size:.76rem;color:rgba(245,240,232,.55);line-height:1.85;margin-bottom:24px">
       Les données proviennent des <strong style="color:var(--paper)">Données Essentielles de la Commande Publique (DECP)</strong>,
       fichier consolidé produit par le Ministère des Finances et publié sur data.gouv.fr sous licence ouverte.
       Tous les acheteurs publics français ont l'obligation légale depuis 2019 de publier leurs marchés de plus de 25 000€.
     </p>
-    <h2 style="font-family:var(--display);font-size:1.3rem;letter-spacing:.08em;margin-bottom:12px">Ce que les données ne permettent pas de conclure</h2>
-    <div style="font-family:var(--mono);font-size:.78rem;color:rgba(245,240,232,.6);line-height:1.8;margin-bottom:24px">
-      <p style="margin-bottom:8px">⚠ Les <strong style="color:var(--gold)">montants des accords-cadres sont des plafonds</strong>, pas des dépenses réelles. Un marché à 100M€ ne signifie pas que 100M€ ont été dépensés.</p>
+
+    <div style="font-family:var(--display);font-size:1.2rem;letter-spacing:.08em;margin-bottom:10px">Ce que les données ne permettent pas de conclure</div>
+    <div style="font-family:var(--mono);font-size:.76rem;color:rgba(245,240,232,.55);line-height:1.85;margin-bottom:24px">
+      <p style="margin-bottom:8px">⚠ Les <strong style="color:var(--gold)">montants des accords-cadres sont des plafonds</strong>, pas des dépenses réelles.</p>
       <p style="margin-bottom:8px">⚠ Le <strong style="color:var(--gold)">lieu d'exécution</strong> reflète parfois le siège de l'acheteur, pas le territoire réel du service rendu.</p>
-      <p style="margin-bottom:8px">⚠ Environ <strong style="color:var(--gold)">13% des marchés IT</strong> ne sont pas encore identifiés dans notre référentiel de groupes.</p>
-      <p>⚠ Les <strong style="color:var(--gold)">dépassements de budget</strong> identifiés sont le résultat de modifications contractuelles légales — ils ne constituent pas en eux-mêmes des irrégularités.</p>
+      <p style="margin-bottom:8px">⚠ Environ <strong style="color:var(--gold)">13% des marchés IT</strong> ne sont pas encore identifiés dans le référentiel de groupes.</p>
+      <p style="margin-bottom:8px">⚠ Les <strong style="color:var(--gold)">dépassements de budget</strong> sont le résultat de modifications contractuelles légales — pas des irrégularités en eux-mêmes.</p>
+      <p>⚠ Les <strong style="color:var(--gold)">marchés sans concurrence</strong> sont légaux dans de nombreux cas (urgence, sécurité nationale, continuité de service).</p>
     </div>
-    <h2 style="font-family:var(--display);font-size:1.3rem;letter-spacing:.08em;margin-bottom:12px">Code source</h2>
-    <p style="font-family:var(--mono);font-size:.78rem;color:rgba(245,240,232,.6);line-height:1.8">
-      Ce projet est open source : <a href="https://github.com/Vanelfokamcode/openmarches" style="color:var(--red)">github.com/Vanelfokamcode/openmarches</a>
+
+    <div style="font-family:var(--display);font-size:1.2rem;letter-spacing:.08em;margin-bottom:10px">Stack technique</div>
+    <p style="font-family:var(--mono);font-size:.76rem;color:rgba(245,240,232,.55);line-height:1.85;margin-bottom:24px">
+      DuckDB · dbt · Dagster · FastAPI · HTML vanilla —
+      <a href="https://github.com/Vanelfokamcode/openmarches" target="_blank" style="color:var(--red)">github.com/Vanelfokamcode/openmarches</a>
     </p>
   </div>
 </div>
 
-<div id="page-monopoles" class="page">
-  <div class="hero" style="padding:20px 32px">
-    <h1 style="font-size:2rem">Monopoles sectoriels</h1>
-    <p style="font-size:.8rem;margin-top:6px">Qui domine quels secteurs IT dans les marches publics francais</p>
-  </div>
-  <div style="padding:8px 32px;display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid rgba(245,240,232,.08)">
-    <button class="yr-btn active" onclick="loadMonopoles(null,this)">Tous</button>
-    <button class="yr-btn" onclick="loadMonopoles('72',this)">72 — Services IT</button>
-    <button class="yr-btn" onclick="loadMonopoles('48',this)">48 — Logiciels</button>
-    <button class="yr-btn" onclick="loadMonopoles('64',this)">64 — Telecom</button>
-    <button class="yr-btn" onclick="loadMonopoles('30',this)">30 — Materiel</button>
-  </div>
-  <div style="padding:24px 32px"><div id="mono-content" class="loading">Chargement...</div></div>
-</div>
-
-<div id="page-geo" class="page">
-  <div class="hero" style="padding:20px 32px">
-    <h1 style="font-size:2rem">Géographie des marchés IT</h1>
-    <p style="font-size:.8rem;margin-top:6px">Dépenses IT publiques par département — source DECP lieuExecution</p>
-  </div>
-  <div style="padding:24px 32px">
-    <div id="geo-stats" style="font-family:var(--mono);font-size:.75rem;color:var(--muted);margin-bottom:16px"></div>
-    <div id="geo-content" class="loading">Chargement...</div>
-  </div>
-</div>
-
+<!-- ======================== FOOTER ======================== -->
+<footer>
+  <span>OpenMarchés — données DECP data.gouv.fr</span>
+  <span id="footer-date"></span>
+  <span class="spacer"></span>
+  <a href="https://github.com/Vanelfokamcode/openmarches" target="_blank">GitHub</a>
+  <span>·</span>
+  <a href="#" onclick="showPage('about');return false">À propos</a>
+</footer>
 
 <script>
-const API = window.location.hostname === 'localhost'
+const API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
   ? 'http://localhost:8002'
   : 'https://openmarches.onrender.com'
 
-function fmt(n) { return Number(n).toLocaleString("fr-FR") }
-function fmtM(n) { return (Number(n)/1e6).toFixed(2) + " M€" }
+function fmt(n) { return Number(n).toLocaleString('fr-FR') }
+function fmtM(n) {
+  const v = Number(n)
+  if (!n && n !== 0) return '—'
+  if (v >= 1e9) return (v/1e9).toFixed(2) + ' Md€'
+  if (v >= 1e6) return (v/1e6).toFixed(2) + ' M€'
+  return fmt(v) + ' €'
+}
 
 async function get(url) {
   const r = await fetch(API + url)
+  if (!r.ok) throw new Error(r.status)
   return r.json()
 }
 
+// ---- NAVIGATION ----
 function showPage(name) {
-  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"))
-  document.querySelectorAll(".nav-links a").forEach(a => a.classList.remove("active"))
-  document.getElementById("page-" + name).classList.add("active")
-  document.getElementById("nav-" + name).classList.add("active")
-  if (name === "classement") loadClassement(null, document.querySelector(".yr-btn"))
-  if (name === "anomalies") loadAnomalies(null, document.querySelector("#page-anomalies .yr-btn"))
-  if (name === "monopoles") loadMonopoles(null, document.querySelector("#page-monopoles .yr-btn"))
-  if (name === "geo") loadGeo()
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'))
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'))
+  const page = document.getElementById('page-' + name)
+  const nav = document.getElementById('nav-' + name)
+  if (page) page.classList.add('active')
+  if (nav) nav.classList.add('active')
+  if (name === 'classement') loadClassement(null, document.querySelector('#page-classement .yr-btn'))
+  if (name === 'anomalies') loadAnomalies(null, document.querySelector('#page-anomalies .yr-btn'))
+  if (name === 'depassements') { loadDepassementsStats(); loadDepassements(100, document.querySelector('#page-depassements .yr-btn[onclick*="100,"]')) }
+  if (name === 'monopoles') loadMonopoles(null, document.querySelector('#page-monopoles .yr-btn'))
+  if (name === 'geo') loadGeo()
 }
 
-// Stats accueil
+// ---- STATS ACCUEIL ----
 async function loadStats() {
   try {
-    const s = await get("/stats")
-    document.getElementById("s-marches").textContent = fmt(s.total_marches)
-    document.getElementById("s-milliards").textContent = Number(s.total_milliards_eur).toFixed(1) + "Md"
-    document.getElementById("s-acheteurs").textContent = fmt(s.nb_acheteurs)
-    document.getElementById("s-titulaires").textContent = fmt(s.nb_titulaires)
+    const s = await get('/stats')
+    document.getElementById('s-marches').textContent = fmt(s.total_marches)
+    document.getElementById('s-milliards').textContent = Number(s.total_milliards_eur).toFixed(1) + ' Md'
+    document.getElementById('s-acheteurs').textContent = fmt(s.nb_acheteurs)
+    document.getElementById('s-titulaires').textContent = fmt(s.nb_titulaires)
   } catch(e) {
-    document.getElementById("s-marches").textContent = "API hors ligne"
+    document.getElementById('s-marches').textContent = 'hors ligne'
   }
 }
 
-// Classement
+// ---- FOOTER DATE ----
+async function loadFooterDate() {
+  try {
+    const d = await get('/last_update')
+    document.getElementById('footer-date').textContent = 'Données au ' + d.last_update
+  } catch(e) {}
+}
+
+// ---- CLASSEMENT ----
 async function loadClassement(annee, btn) {
-  document.querySelectorAll("#page-classement .yr-btn").forEach(b => b.classList.remove("active"))
-  if (btn) btn.classList.add("active")
-  document.getElementById("classement-content").innerHTML = '<div class="loading">Chargement...</div>'
+  document.querySelectorAll('#page-classement .yr-btn').forEach(b => b.classList.remove('active'))
+  if (btn) btn.classList.add('active')
+  document.getElementById('classement-content').innerHTML = '<div class="loading">Chargement...</div>'
   try {
-    const url = annee ? "/classement?annee=" + annee + "&limit=20" : "/classement?limit=20"
+    const url = annee ? '/classement?annee=' + annee + '&limit=25' : '/classement?limit=25'
     const data = await get(url)
-    const maxM = Math.max(...data.map(r => r.total_M_eur || 0))
-    let html = "<table><thead><tr><th>Groupe</th><th>Total M€</th><th>Part marché</th><th>Marchés</th></tr></thead><tbody>"
-    data.forEach(r => {
-      const barW = Math.round((r.total_M_eur / maxM) * 120)
-      html += `<tr>
-        <td style="font-weight:700;color:var(--paper)">${r.groupe}</td>
-        <td style="color:var(--gold)">${fmt(r.total_M_eur)}</td>
-        <td><div class="bar-cell"><div class="bar" style="width:${barW}px"></div><span style="color:rgba(245,240,232,.5)">${r.part_marche_pct || "—"}%</span></div></td>
-        <td style="color:rgba(245,240,232,.4)">${r.nb_marches}</td>
-      </tr>`
+    if (!data.length) { document.getElementById('classement-content').innerHTML = '<div class="loading">Aucune donnée</div>'; return }
+    const maxM = Math.max(...data.map(r => r.total_M_eur || r.total_millions_eur || 0))
+    let html = '<table><thead><tr><th>#</th><th>Groupe</th><th>Total</th><th>Part marché</th><th>Marchés</th></tr></thead><tbody>'
+    data.forEach((r, i) => {
+      const total = r.total_M_eur || r.total_millions_eur || 0
+      const pct = r.part_marche_pct || 0
+      const barW = Math.round((total / maxM) * 100)
+      html += '<tr>'
+      html += '<td style="color:rgba(245,240,232,.25);font-size:.65rem">' + (i+1) + '</td>'
+      html += '<td style="font-weight:700;color:var(--paper)">' + (r.groupe || '—') + '</td>'
+      html += '<td style="color:var(--gold)">' + Number(total).toFixed(1) + ' M€</td>'
+      html += '<td><div class="bar-cell"><div class="bar" style="width:' + barW + 'px"></div><span style="color:rgba(245,240,232,.45);font-size:.65rem">' + pct + '%</span></div></td>'
+      html += '<td style="color:rgba(245,240,232,.35)">' + fmt(r.nb_marches || 0) + '</td>'
+      html += '</tr>'
     })
-    html += "</tbody></table>"
-    document.getElementById("classement-content").innerHTML = html
+    html += '</tbody></table>'
+    document.getElementById('classement-content').innerHTML = html
   } catch(e) {
-    document.getElementById("classement-content").innerHTML = '<div class="loading">Erreur — API hors ligne ?</div>'
+    document.getElementById('classement-content').innerHTML = '<div class="loading">Erreur — API hors ligne ?</div>'
   }
 }
 
-// Recherche
+// ---- RECHERCHE ----
 async function doSearch() {
-  const q = document.getElementById("search-input").value.trim()
+  const q = document.getElementById('search-input').value.trim()
   if (q.length < 2) return
-  document.getElementById("search-results").innerHTML = '<div class="loading">Recherche en cours...</div>'
+  document.getElementById('search-results').innerHTML = '<div class="loading">Recherche en cours...</div>'
   try {
-    const data = await get("/search?q=" + encodeURIComponent(q) + "&limit=30")
+    const data = await get('/search?q=' + encodeURIComponent(q) + '&limit=30')
     if (!data.length) {
-      document.getElementById("search-results").innerHTML = '<div class="loading">Aucun résultat pour "' + q + '"</div>'
+      document.getElementById('search-results').innerHTML = '<div class="loading">Aucun résultat pour "' + q + '"</div>'
       return
     }
-    let html = `<div style="font-family:var(--mono);font-size:.65rem;color:var(--muted);margin-bottom:16px">${data.length} résultats pour "${q}"</div>`
+    let html = '<div style="font-family:var(--mono);font-size:.63rem;color:var(--muted);margin-bottom:14px">' + data.length + ' résultats pour "' + q + '"</div>'
     data.forEach(r => {
-      html += `<div class="result-item">
-        <div class="result-row">
-          <div style="flex:1">
-            <div class="result-groupe">${r.groupe || "NON MAPPÉ"}</div>
-            <div class="result-objet">${r.objet || "—"}</div>
-            <div class="result-meta">
-              <span>${r.annee}</span>
-              <span>CPV ${r.code_cpv}</span>
-              <span>Acheteur ${r.acheteur_siret}</span>
-            </div>
-          </div>
-          <div class="result-montant">${fmtM(r.montant_eur)}</div>
-        </div>
-      </div>`
+      html += '<div class="result-item"><div class="result-row"><div style="flex:1">'
+      html += '<div class="result-groupe">' + (r.groupe || 'NON MAPPÉ') + '</div>'
+      html += '<div class="result-objet">' + (r.objet || '—') + '</div>'
+      html += '<div class="result-meta"><span>' + (r.annee || '?') + '</span><span>CPV ' + (r.code_cpv || '?') + '</span><span>' + (r.acheteur_siret || '?') + '</span></div>'
+      html += '</div><div class="result-montant">' + fmtM(r.montant_eur) + '</div></div></div>'
     })
-    document.getElementById("search-results").innerHTML = html
+    document.getElementById('search-results').innerHTML = html
   } catch(e) {
-    document.getElementById("search-results").innerHTML = '<div class="loading">Erreur — API hors ligne ?</div>'
+    document.getElementById('search-results').innerHTML = '<div class="loading">Erreur — API hors ligne ?</div>'
   }
 }
 
-// Anomalies
+// ---- ANOMALIES ----
 async function loadAnomalies(type, btn) {
-  document.querySelectorAll("#page-anomalies .yr-btn").forEach(b => b.classList.remove("active"))
-  if (btn) btn.classList.add("active")
-  document.getElementById("anomalies-content").innerHTML = '<div class="loading">Chargement...</div>'
+  document.querySelectorAll('#page-anomalies .yr-btn').forEach(b => b.classList.remove('active'))
+  if (btn) btn.classList.add('active')
+  document.getElementById('anomalies-content').innerHTML = '<div class="loading">Chargement...</div>'
   try {
-    const url = type ? "/anomalies?type_anomalie=" + type + "&limit=100" : "/anomalies?limit=100"
+    const url = type ? '/anomalies?type_anomalie=' + type + '&limit=100' : '/anomalies?limit=100'
     const data = await get(url)
-    let html = "<table><thead><tr><th>Type</th><th>Montant</th><th>Date</th><th>Acheteur</th><th>Objet</th></tr></thead><tbody>"
+    let html = '<table><thead><tr><th>Type</th><th>Montant</th><th>Date</th><th>Acheteur</th><th>Objet</th></tr></thead><tbody>'
     data.forEach(r => {
-      html += `<tr>
-        <td style="color:var(--red);font-size:.65rem">${r.type_anomalie}</td>
-        <td style="color:var(--gold)">${r.montant_eur ? fmtM(r.montant_eur) : "—"}</td>
-        <td>${r.date_notification || "—"}</td>
-        <td style="color:rgba(245,240,232,.4)">${r.acheteur_siret || "—"}</td>
-        <td style="max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.objet_court || "—"}</td>
-      </tr>`
+      html += '<tr>'
+      html += '<td style="color:var(--red);font-size:.63rem">' + (r.type_anomalie || '?') + '</td>'
+      html += '<td style="color:var(--gold)">' + (r.montant_eur ? fmtM(r.montant_eur) : '—') + '</td>'
+      html += '<td style="color:rgba(245,240,232,.4)">' + (r.date_notification || '—') + '</td>'
+      html += '<td style="color:rgba(245,240,232,.3);font-size:.65rem">' + (r.acheteur_siret || '—') + '</td>'
+      html += '<td style="max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + (r.objet_court || '—') + '</td>'
+      html += '</tr>'
     })
-    html += "</tbody></table>"
-    document.getElementById("anomalies-content").innerHTML = html
+    html += '</tbody></table>'
+    document.getElementById('anomalies-content').innerHTML = html
   } catch(e) {
-    document.getElementById("anomalies-content").innerHTML = '<div class="loading">Erreur — API hors ligne ?</div>'
+    document.getElementById('anomalies-content').innerHTML = '<div class="loading">Erreur — API hors ligne ?</div>'
   }
 }
 
-async function loadMonopoles(famille, btn) {
-  document.querySelectorAll("#page-monopoles .yr-btn").forEach(b => b.classList.remove("active"))
-  if (btn) btn.classList.add("active")
-  document.getElementById("mono-content").innerHTML = '<div class="loading">Chargement...</div>'
-  try {
-    const url = famille ? "/monopoles?famille_cpv=" + famille + "&limit=30" : "/monopoles/top?limit=30"
-    const data = await get(url)
-    let html = "<table><thead><tr><th>Rang</th><th>Groupe</th><th>CPV</th><th style='text-align:right'>Total M€</th><th style='text-align:right'>Part marche</th><th>Niveau</th></tr></thead><tbody>"
-    data.forEach(r => {
-      const color = r.niveau_concentration === "MONOPOLE" ? "var(--red)" :
-                    r.niveau_concentration === "DOMINANT" ? "var(--gold)" : "rgba(245,240,232,.5)"
-      html += "<tr><td style='color:var(--muted)'>" + r.rang + "</td>"
-      html += "<td style='font-weight:700'>" + r.groupe + "</td>"
-      html += "<td style='color:var(--muted)'>" + (r.code_cpv || r.famille_cpv) + "</td>"
-      html += "<td style='text-align:right;color:var(--gold)'>" + (r.total_millions_eur || 0).toFixed(1) + "</td>"
-      html += "<td style='text-align:right'>" + (r.part_pct || 0) + "%</td>"
-      html += "<td style='color:" + color + ";font-weight:700'>" + (r.niveau_concentration || "") + "</td></tr>"
-    })
-    html += "</tbody></table>"
-    document.getElementById("mono-content").innerHTML = html
-  } catch(e) {
-    document.getElementById("mono-content").innerHTML = '<div class="loading">Erreur API</div>'
-  }
-}
-
+// ---- DEPASSEMENTS ----
 async function loadDepassementsStats() {
   try {
-    const s = await get("/depassements/stats")
-    document.getElementById("dep-stats").innerHTML =
-      `${s.nb_marches_depasses} marchés dépassés · ` +
-      `Médiane : +${s.depassement_median_pct}% · ` +
-      `Max : +${s.depassement_max_pct?.toLocaleString("fr-FR")}% · ` +
-      `Total dépassement : ${s.total_depassement_millions_eur} M€`
+    const s = await get('/depassements/stats')
+    document.getElementById('dep-stats').innerHTML =
+      fmt(s.nb_marches_depasses) + ' marchés dépassés · ' +
+      'Médiane : +' + s.depassement_median_pct + '% · ' +
+      'Max : +' + Number(s.depassement_max_pct).toLocaleString('fr-FR') + '% · ' +
+      'Total dépassement : ' + s.total_depassement_millions_eur + ' M€'
   } catch(e) {}
 }
 
 async function loadDepassements(minPct, btn) {
-  document.querySelectorAll("#page-depassements .yr-btn").forEach(b => b.classList.remove("active"))
-  if (btn) btn.classList.add("active")
-  document.getElementById("dep-content").innerHTML = '<div class="loading">Chargement...</div>'
+  document.querySelectorAll('#page-depassements .yr-btn').forEach(b => b.classList.remove('active'))
+  if (btn) btn.classList.add('active')
+  document.getElementById('dep-content').innerHTML = '<div class="loading">Chargement...</div>'
   try {
-    const data = await get(`/depassements?min_pct=${minPct}&limit=50`)
-    let html = `<div style="font-family:var(--mono);font-size:.65rem;color:var(--muted);margin-bottom:16px">${data.length} marchés avec dépassement ≥ +${minPct.toLocaleString("fr-FR")}%</div>`
-    html += `<table><thead><tr>
-      <th>Objet</th><th style="text-align:right">Initial</th>
-      <th style="text-align:right">Après avenant</th>
-      <th style="text-align:right">Dépassement</th>
-      <th>Date</th>
-    </tr></thead><tbody>`
+    const data = await get('/depassements?min_pct=' + minPct + '&limit=50')
+    let html = '<div style="font-family:var(--mono);font-size:.63rem;color:var(--muted);margin-bottom:14px">' + data.length + ' marchés avec dépassement ≥ +' + fmt(minPct) + '%</div>'
+    html += '<table><thead><tr><th>Objet</th><th style="text-align:right">Initial</th><th style="text-align:right">Après avenant</th><th style="text-align:right">Dépassement</th><th>Date</th></tr></thead><tbody>'
     data.forEach(r => {
-      const pct = r.depassement_pct?.toLocaleString("fr-FR")
-      html += `<tr>
-        <td style="max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.objet || "—"}</td>
-        <td style="text-align:right;color:rgba(245,240,232,.4)">${fmtM(r.montant_initial_eur)}</td>
-        <td style="text-align:right;color:var(--gold)">${fmtM(r.montant_apres_modif_eur)}</td>
-        <td style="text-align:right;color:var(--red);font-weight:700">+${pct}%</td>
-        <td style="color:rgba(245,240,232,.3)">${r.date_notification || "—"}</td>
-      </tr>`
+      html += '<tr>'
+      html += '<td style="max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + (r.objet || '—') + '</td>'
+      html += '<td style="text-align:right;color:rgba(245,240,232,.35)">' + fmtM(r.montant_initial_eur) + '</td>'
+      html += '<td style="text-align:right;color:var(--gold)">' + fmtM(r.montant_apres_modif_eur) + '</td>'
+      html += '<td style="text-align:right;color:var(--red);font-weight:700">+' + Number(r.depassement_pct).toLocaleString('fr-FR') + '%</td>'
+      html += '<td style="color:rgba(245,240,232,.3)">' + (r.date_notification || '—') + '</td>'
+      html += '</tr>'
     })
-    html += "</tbody></table>"
-    document.getElementById("dep-content").innerHTML = html
+    html += '</tbody></table>'
+    document.getElementById('dep-content').innerHTML = html
   } catch(e) {
-    document.getElementById("dep-content").innerHTML = '<div class="loading">Erreur API</div>'
+    document.getElementById('dep-content').innerHTML = '<div class="loading">Erreur API</div>'
   }
 }
 
+// ---- MONOPOLES ----
+async function loadMonopoles(famille, btn) {
+  document.querySelectorAll('#page-monopoles .yr-btn').forEach(b => b.classList.remove('active'))
+  if (btn) btn.classList.add('active')
+  document.getElementById('mono-content').innerHTML = '<div class="loading">Chargement...</div>'
+  try {
+    const url = famille ? '/monopoles?famille_cpv=' + famille + '&limit=30' : '/monopoles/top?limit=30'
+    const data = await get(url)
+    let html = '<table><thead><tr><th>Rang</th><th>Groupe</th><th>CPV</th><th style="text-align:right">Total</th><th style="text-align:right">Part</th><th>Niveau</th></tr></thead><tbody>'
+    data.forEach(r => {
+      const col = r.niveau_concentration === 'MONOPOLE' ? 'var(--red)' :
+                  r.niveau_concentration === 'DOMINANT' ? 'var(--gold)' : 'rgba(245,240,232,.45)'
+      html += '<tr>'
+      html += '<td style="color:rgba(245,240,232,.3)">' + (r.rang || '?') + '</td>'
+      html += '<td style="font-weight:700">' + (r.groupe || '?') + '</td>'
+      html += '<td style="color:rgba(245,240,232,.35);font-size:.65rem">' + (r.code_cpv || r.famille_cpv || '?') + '</td>'
+      html += '<td style="text-align:right;color:var(--gold)">' + Number(r.total_millions_eur || 0).toFixed(1) + ' M€</td>'
+      html += '<td style="text-align:right">' + (r.part_pct || 0) + '%</td>'
+      html += '<td style="color:' + col + ';font-weight:700;font-size:.65rem">' + (r.niveau_concentration || '') + '</td>'
+      html += '</tr>'
+    })
+    html += '</tbody></table>'
+    document.getElementById('mono-content').innerHTML = html
+  } catch(e) {
+    document.getElementById('mono-content').innerHTML = '<div class="loading">Erreur API</div>'
+  }
+}
+
+// ---- GEO ----
 async function loadGeo() {
+  document.getElementById('geo-content').innerHTML = '<div class="loading">Chargement...</div>'
   try {
-    const [data, stats] = await Promise.all([get("/geo?limit=40"), get("/geo/stats")])
-    document.getElementById("geo-stats").textContent =
-      stats.nb_departements + " departements · Total IT identifie : " +
-      (stats.total_M_it_france || 0).toFixed(0) + " M€"
+    const [data, stats] = await Promise.all([get('/geo?limit=40'), get('/geo/stats')])
+    document.getElementById('geo-stats').textContent =
+      (stats.nb_departements || '?') + ' départements · Total IT identifié : ' +
+      Number(stats.total_M_it_france || 0).toFixed(0) + ' M€'
+    if (!data.length) { document.getElementById('geo-content').innerHTML = '<div class="loading">Aucune donnée géo</div>'; return }
     const maxM = Math.max(...data.map(r => r.total_M_it || 0))
-    let html = ""
+    let html = ''
     data.forEach(r => {
-      const barW = Math.round(((r.total_M_it || 0) / maxM) * 280)
-      const nom = r.nom_dept || r.dept
-      html += "<div style='margin-bottom:12px;display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:.72rem'>"
-      html += "<span style='min-width:120px;color:rgba(245,240,232,.6)'>" + r.dept + " — " + nom + "</span>"
-      html += "<div style='height:3px;background:var(--red);width:" + barW + "px'></div>"
-      html += "<span style='color:var(--gold)'>" + (r.total_M_it || 0).toFixed(0) + " M€</span>"
-      if (r.euros_it_par_habitant) {
-        html += "<span style='color:rgba(245,240,232,.3);margin-left:8px'>" + r.euros_it_par_habitant.toFixed(0) + "€/hab</span>"
-      }
-      html += "</div>"
+      const barW = Math.round(((r.total_M_it || 0) / maxM) * 260)
+      const nom = r.nom_dept ? r.dept + ' — ' + r.nom_dept : r.dept
+      html += '<div style="margin-bottom:11px;display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:.7rem">'
+      html += '<span style="min-width:140px;color:rgba(245,240,232,.55)">' + nom + '</span>'
+      html += '<div style="height:2px;background:var(--red);width:' + barW + 'px;flex-shrink:0"></div>'
+      html += '<span style="color:var(--gold)">' + Number(r.total_M_it || 0).toFixed(0) + ' M€</span>'
+      if (r.euros_it_par_habitant) html += '<span style="color:rgba(245,240,232,.25);font-size:.65rem">' + Number(r.euros_it_par_habitant).toFixed(0) + '€/hab</span>'
+      html += '</div>'
     })
-    document.getElementById("geo-content").innerHTML = html
+    document.getElementById('geo-content').innerHTML = html
   } catch(e) {
-    document.getElementById("geo-content").innerHTML = '<div class="loading">Erreur API — /geo disponible ?</div>'
+    document.getElementById('geo-content').innerHTML = '<div class="loading">Erreur API — /geo disponible ?</div>'
   }
 }
 
-
+// ---- INIT ----
 loadStats()
+loadFooterDate()
 </script>
-
 </body>
 </html>
-<!-- PAGE DEPASSEMENTS ajoutee Day 8 -->
-<div id="page-depassements" class="page">
-  <div class="hero" style="padding:20px 32px">
-    <h1 style="font-size:2rem">Dépassements de budget</h1>
-    <p style="font-size:.8rem;margin-top:6px">Marchés avec modifications — montant initial vs montant réel après avenant</p>
-  </div>
-  <div style="padding:16px 32px;border-bottom:1px solid rgba(245,240,232,.1)">
-    <div id="dep-stats" style="font-family:var(--mono);font-size:.75rem;color:var(--muted)">Chargement...</div>
-  </div>
-  <div style="padding:8px 32px;display:flex;gap:8px;align-items:center;border-bottom:1px solid rgba(245,240,232,.08)">
-    <span style="font-family:var(--mono);font-size:.65rem;color:var(--muted)">Dépassement minimum :</span>
-    <button class="yr-btn active" onclick="loadDepassements(100,this)">+100%</button>
-    <button class="yr-btn" onclick="loadDepassements(500,this)">+500%</button>
-    <button class="yr-btn" onclick="loadDepassements(1000,this)">+1 000%</button>
-    <button class="yr-btn" onclick="loadDepassements(10000,this)">+10 000%</button>
-  </div>
-  <div style="padding:24px 32px"><div id="dep-content" class="loading">Chargement...</div></div>
-</div>
