@@ -1,7 +1,8 @@
-import duckdb
-import math
+import duckdb, math
 from pathlib import Path
 
+# Railway met les fichiers dans /app par defaut
+# En local c'est le dossier du projet
 DB_PATH = Path(__file__).parent.parent / "data" / "openmarches.duckdb"
 
 def get_conn():
