@@ -1,9 +1,17 @@
 import duckdb, requests, ijson, json
+from decimal import Decimal
 from pathlib import Path
 
 DB_PATH = Path("data/openmarches.duckdb")
 JSON_PATH = Path("data/raw/decp_sample.json")
 DECP_URL = "https://www.data.gouv.fr/api/1/datasets/r/2551ad40-584a-42fd-b3cc-e8906183287e"
+
+
+class DecimalEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Decimal):
+            return float(obj)
+        return super().default(obj)
 
 def init_db():
     DB_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -28,7 +36,7 @@ def init_db():
             for marche in ijson.items(f_in, "marches.marche.item"):
                 if not first:
                     f_out.write(",")
-                json.dump(marche, f_out, ensure_ascii=False)
+                json.dump(marche, f_out, ensure_ascii=False, cls=DecimalEncoder)
                 first = False
                 count += 1
                 if count % 10000 == 0:
