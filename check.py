@@ -1,24 +1,18 @@
-import duckdb, pandas as pd
+import duckdb
 
-src = duckdb.connect("data/openmarches.duckdb")
-prod = duckdb.connect("data/openmarches_prod.duckdb")
+conn = duckdb.connect("data/openmarches.duckdb")
 
-# Voir ce qui manque
-print("Tables dans prod :")
-print(prod.execute("SHOW TABLES").fetchdf().to_string())
+print("=== MART RECURRENTS TOP 5 ===")
+print(conn.execute("SELECT * FROM main.mart_recurrents LIMIT 5").fetchdf().to_string(index=False))
 
-# Ajouter stg_titulaires en version allegee
-df = src.execute("""
-    SELECT marche_id, groupe, siret, nom_entreprise,
-        montant_eur, annee, code_cpv, famille_cpv,
-        LEFT(objet, 150) as objet, acheteur_siret,
-        flag_montant_suspect, flag_date_suspecte
-    FROM main.stg_titulaires
-    WHERE flag_montant_suspect = FALSE
-    LIMIT 50000
-""").fetchdf()
-prod.execute("CREATE OR REPLACE TABLE stg_titulaires AS SELECT * FROM df")
-print("stg_titulaires : " + str(len(df)) + " lignes")
+print("\n=== PROCEDURES STATS ===")
+print(conn.execute("""
+    SELECT categorie_procedure,
+        SUM(nb_marches) as nb_total,
+        ROUND(SUM(total_millions_eur),1) as total_M
+    FROM main.mart_procedures
+    GROUP BY categorie_procedure
+    ORDER BY nb_total DESC
+""").fetchdf().to_string(index=False))
 
-src.close()
-prod.close()
+conn.close()
