@@ -71,7 +71,11 @@ tr:hover td{background:rgba(255,255,255,.02)}
     <a href="#" onclick="showPage('classement')" id="nav-classement">Classement</a>
     <a href="#" onclick="showPage('recherche')" id="nav-recherche">Recherche</a>
     <a href="#" onclick="showPage('anomalies')" id="nav-anomalies">Anomalies</a>
+    <a href="#" onclick="showPage('monopoles')" id="nav-monopoles">Monopoles</a>
+    <a href="#" onclick="showPage('geo')" id="nav-geo">Géographie</a>
     <a href="#" onclick="showPage('about')" id="nav-about">À propos</a>
+    
+
 
   </div>
 </nav>
@@ -184,10 +188,37 @@ tr:hover td{background:rgba(255,255,255,.02)}
   </div>
 </div>
 
+<div id="page-monopoles" class="page">
+  <div class="hero" style="padding:20px 32px">
+    <h1 style="font-size:2rem">Monopoles sectoriels</h1>
+    <p style="font-size:.8rem;margin-top:6px">Qui domine quels secteurs IT dans les marches publics francais</p>
+  </div>
+  <div style="padding:8px 32px;display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid rgba(245,240,232,.08)">
+    <button class="yr-btn active" onclick="loadMonopoles(null,this)">Tous</button>
+    <button class="yr-btn" onclick="loadMonopoles('72',this)">72 — Services IT</button>
+    <button class="yr-btn" onclick="loadMonopoles('48',this)">48 — Logiciels</button>
+    <button class="yr-btn" onclick="loadMonopoles('64',this)">64 — Telecom</button>
+    <button class="yr-btn" onclick="loadMonopoles('30',this)">30 — Materiel</button>
+  </div>
+  <div style="padding:24px 32px"><div id="mono-content" class="loading">Chargement...</div></div>
+</div>
+
+<div id="page-geo" class="page">
+  <div class="hero" style="padding:20px 32px">
+    <h1 style="font-size:2rem">Géographie des marchés IT</h1>
+    <p style="font-size:.8rem;margin-top:6px">Dépenses IT publiques par département — source DECP lieuExecution</p>
+  </div>
+  <div style="padding:24px 32px">
+    <div id="geo-stats" style="font-family:var(--mono);font-size:.75rem;color:var(--muted);margin-bottom:16px"></div>
+    <div id="geo-content" class="loading">Chargement...</div>
+  </div>
+</div>
+
+
 <script>
 const API = window.location.hostname === 'localhost'
   ? 'http://localhost:8002'
-  : 'openmarches-production.up.railway.app'
+  : 'https://openmarches.onrender.com'
 
 function fmt(n) { return Number(n).toLocaleString("fr-FR") }
 function fmtM(n) { return (Number(n)/1e6).toFixed(2) + " M€" }
@@ -204,6 +235,8 @@ function showPage(name) {
   document.getElementById("nav-" + name).classList.add("active")
   if (name === "classement") loadClassement(null, document.querySelector(".yr-btn"))
   if (name === "anomalies") loadAnomalies(null, document.querySelector("#page-anomalies .yr-btn"))
+  if (name === "monopoles") loadMonopoles(null, document.querySelector("#page-monopoles .yr-btn"))
+  if (name === "geo") loadGeo()
 }
 
 // Stats accueil
@@ -304,6 +337,31 @@ async function loadAnomalies(type, btn) {
   }
 }
 
+async function loadMonopoles(famille, btn) {
+  document.querySelectorAll("#page-monopoles .yr-btn").forEach(b => b.classList.remove("active"))
+  if (btn) btn.classList.add("active")
+  document.getElementById("mono-content").innerHTML = '<div class="loading">Chargement...</div>'
+  try {
+    const url = famille ? "/monopoles?famille_cpv=" + famille + "&limit=30" : "/monopoles/top?limit=30"
+    const data = await get(url)
+    let html = "<table><thead><tr><th>Rang</th><th>Groupe</th><th>CPV</th><th style='text-align:right'>Total M€</th><th style='text-align:right'>Part marche</th><th>Niveau</th></tr></thead><tbody>"
+    data.forEach(r => {
+      const color = r.niveau_concentration === "MONOPOLE" ? "var(--red)" :
+                    r.niveau_concentration === "DOMINANT" ? "var(--gold)" : "rgba(245,240,232,.5)"
+      html += "<tr><td style='color:var(--muted)'>" + r.rang + "</td>"
+      html += "<td style='font-weight:700'>" + r.groupe + "</td>"
+      html += "<td style='color:var(--muted)'>" + (r.code_cpv || r.famille_cpv) + "</td>"
+      html += "<td style='text-align:right;color:var(--gold)'>" + (r.total_millions_eur || 0).toFixed(1) + "</td>"
+      html += "<td style='text-align:right'>" + (r.part_pct || 0) + "%</td>"
+      html += "<td style='color:" + color + ";font-weight:700'>" + (r.niveau_concentration || "") + "</td></tr>"
+    })
+    html += "</tbody></table>"
+    document.getElementById("mono-content").innerHTML = html
+  } catch(e) {
+    document.getElementById("mono-content").innerHTML = '<div class="loading">Erreur API</div>'
+  }
+}
+
 async function loadDepassementsStats() {
   try {
     const s = await get("/depassements/stats")
@@ -345,9 +403,36 @@ async function loadDepassements(minPct, btn) {
   }
 }
 
+async function loadGeo() {
+  try {
+    const [data, stats] = await Promise.all([get("/geo?limit=40"), get("/geo/stats")])
+    document.getElementById("geo-stats").textContent =
+      stats.nb_departements + " departements · Total IT identifie : " +
+      (stats.total_M_it_france || 0).toFixed(0) + " M€"
+    const maxM = Math.max(...data.map(r => r.total_M_it || 0))
+    let html = ""
+    data.forEach(r => {
+      const barW = Math.round(((r.total_M_it || 0) / maxM) * 280)
+      const nom = r.nom_dept || r.dept
+      html += "<div style='margin-bottom:12px;display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:.72rem'>"
+      html += "<span style='min-width:120px;color:rgba(245,240,232,.6)'>" + r.dept + " — " + nom + "</span>"
+      html += "<div style='height:3px;background:var(--red);width:" + barW + "px'></div>"
+      html += "<span style='color:var(--gold)'>" + (r.total_M_it || 0).toFixed(0) + " M€</span>"
+      if (r.euros_it_par_habitant) {
+        html += "<span style='color:rgba(245,240,232,.3);margin-left:8px'>" + r.euros_it_par_habitant.toFixed(0) + "€/hab</span>"
+      }
+      html += "</div>"
+    })
+    document.getElementById("geo-content").innerHTML = html
+  } catch(e) {
+    document.getElementById("geo-content").innerHTML = '<div class="loading">Erreur API — /geo disponible ?</div>'
+  }
+}
+
 
 loadStats()
 </script>
+
 </body>
 </html>
 <!-- PAGE DEPASSEMENTS ajoutee Day 8 -->
