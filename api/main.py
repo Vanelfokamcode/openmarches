@@ -209,23 +209,26 @@ def monopoles_top(limit: int = Query(20, le=100)):
 
 @app.get("/geo", summary="Dépenses IT par département")
 def geo(
-    region: str = Query(None, description="Filtrer par région"),
+    region: str = Query(None),
     limit: int = Query(50, le=110)
 ):
-    where = "WHERE region = ?" if region else ""
-    params = [region] if region else None
     sql = f"""
-        SELECT dept, nom_dept, region, population_2023,
-            nb_marches_it, total_M_it,
-            total_M_logiciels, total_M_telecom, total_M_materiel,
+        SELECT dept,
+            dept as nom_dept,
+            NULL as region,
+            NULL as population_2023,
+            nb_marches_it,
+            total_M_it,
+            NULL as total_M_logiciels,
+            NULL as total_M_telecom,
+            NULL as total_M_materiel,
             NULL as euros_it_par_habitant
-        FROM main.mart_geo_departements
-        {where}
+        FROM mart_geo_departements
+        WHERE dept IS NOT NULL
         ORDER BY total_M_it DESC
         LIMIT {limit}
     """
-    return query(sql, params if params else None)
-
+    return query(sql)
 
 @app.get("/geo/stats", summary="Stats géo globales")
 def geo_stats():
