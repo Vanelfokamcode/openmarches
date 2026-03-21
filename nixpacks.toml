@@ -1,9 +1,0 @@
-# Créer nixpacks.toml à la racine dans VSCode
-[phases.setup]
-nixPkgs = ["python311"]
-
-[phases.install]
-cmds = ["pip install -r requirements.txt"]
-
-[start]
-cmd = "python api/startup.py && uvicorn api.main:app --host 0.0.0.0 --port $PORT"
