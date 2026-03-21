@@ -82,14 +82,16 @@ def search(
     limit: int = Query(20, le=100)
 ):
     sql = """
-        SELECT marche_id, groupe, siret, nom_entreprise,
+        SELECT marche_id, groupe,
+            CAST(siret AS VARCHAR) as siret,
+            CAST(nom_entreprise AS VARCHAR) as nom_entreprise,
             montant_eur, annee, code_cpv,
-            LEFT(objet, 150) as objet,
+            LEFT(CAST(objet AS VARCHAR), 150) as objet,
             acheteur_siret
-        FROM main.stg_titulaires
-        WHERE (LOWER(objet) LIKE LOWER(CONCAT('%', ?, '%'))
-            OR LOWER(groupe) LIKE LOWER(CONCAT('%', ?, '%'))
-            OR LOWER(nom_entreprise) LIKE LOWER(CONCAT('%', ?, '%')))
+        FROM stg_titulaires
+        WHERE (LOWER(CAST(objet AS VARCHAR)) LIKE LOWER(CONCAT('%', ?, '%'))
+            OR LOWER(CAST(groupe AS VARCHAR)) LIKE LOWER(CONCAT('%', ?, '%'))
+            OR LOWER(CAST(nom_entreprise AS VARCHAR)) LIKE LOWER(CONCAT('%', ?, '%')))
         AND flag_montant_suspect = FALSE
         ORDER BY montant_eur DESC
         LIMIT ?
