@@ -1,6 +1,8 @@
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 from api.database import query
+import os 
+from datetime import datetime
 
 app = FastAPI(
     title="OpenMarchés API",
@@ -74,6 +76,16 @@ def acheteurs(
         LIMIT {limit}
     """
     return query(sql, params)
+
+@app.get("/last_update", summary="Date de la derniere mise a jour des donnees")
+def last_update():
+    db_path = Path(__file__).parent.parent / "data" / "openmarches_prod.duckdb"
+    if db_path.exists():
+        mtime = db_path.stat().st_mtime
+        date_str = datetime.fromtimestamp(mtime).strftime("%Y-%m-%d")
+        return {"last_update": date_str, "source": "DECP data.gouv.fr"}
+    return {"last_update": "inconnue", "source": "DECP data.gouv.fr"}
+
 
 
 @app.get("/search", summary="Recherche libre dans les marchés")
