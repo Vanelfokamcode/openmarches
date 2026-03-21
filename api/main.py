@@ -218,7 +218,7 @@ def geo(
         SELECT dept, nom_dept, region, population_2023,
             nb_marches_it, total_M_it,
             total_M_logiciels, total_M_telecom, total_M_materiel,
-            euros_it_par_habitant
+            NULL as euros_it_par_habitant
         FROM main.mart_geo_departements
         {where}
         ORDER BY total_M_it DESC
@@ -232,11 +232,8 @@ def geo_stats():
     sql = """
         SELECT
             COUNT(DISTINCT dept) as nb_departements,
-            ROUND(SUM(total_M_it), 1) as total_M_it_france,
-            ROUND(AVG(euros_it_par_habitant), 2) as moy_euros_hab,
-            MAX(euros_it_par_habitant) as max_euros_hab,
-            MIN(euros_it_par_habitant) as min_euros_hab
-        FROM main.mart_geo_departements
-        WHERE euros_it_par_habitant IS NOT NULL
+            ROUND(SUM(total_M_it), 1) as total_M_it_france
+        FROM mart_geo_departements
+        WHERE dept IS NOT NULL
     """
     return query(sql)[0]
